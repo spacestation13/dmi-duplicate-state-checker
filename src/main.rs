@@ -14,12 +14,16 @@ struct Args {
 	paths: Vec<PathBuf>,
 
 	/// Exit with a code of 0 instead of how many duplicates were detected
-	#[arg(short, long, default_value_t = true)]
+	#[arg(short, long, default_value_t = false)]
 	donterror: bool,
 
 	/// If a file is encountered that can't be read, output a warning
-	#[arg(short, long, default_value_t = false)]
+	#[arg(short, long, default_value_t = true)]
 	warn_read: bool,
+
+	/// Message formatting is in the correct format for GitHub Actions error reporting
+	#[arg(long)]
+	actions_fmt: bool,
 }
 
 /// Will continue a loop if the passed expr is an error and warn with a message
@@ -61,14 +65,26 @@ fn main() {
 				args.warn_read
 			);
 
-			let dmi = skip_fail_yell!(
-				Icon::load(file),
-				"Couldn't read DMI at {} : {}",
-				path.to_string_lossy(),
-				args.warn_read
-			);
+			let dmi = match Icon::load(file) {
+				Ok(val) => val,
+				Err(e) => {
+					if args.warn_read {
+						if args.actions_fmt {
+							println!(
+								"::error file={},title=Weird DMI format::Couldn't read DMI at {} : {}",
+								path.to_string_lossy(),
+								path.to_string_lossy(),
+								e
+							)
+						} else {
+							println!("Couldn't read DMI at {} : {}", path.to_string_lossy(), e)
+						}
+					}
+					continue;
+				}
+			};
 
-			check_dmi(dmi, path, &mut error_count);
+			check_dmi(dmi, path, &mut error_count, args.actions_fmt);
 		}
 	}
 	println!("Complete, {} duplicates found.", error_count);
@@ -79,7 +95,7 @@ fn main() {
 }
 
 /// Checks that a given DMI at a given path has no duplicate states
-fn check_dmi(dmi: Icon, path: &Path, error_count: &mut i32) {
+fn check_dmi(dmi: Icon, path: &Path, error_count: &mut i32, actions_fmt: bool) {
 	let mut state_names = Vec::with_capacity(dmi.states.len());
 
 	for state in dmi.states {
@@ -88,11 +104,20 @@ fn check_dmi(dmi: Icon, path: &Path, error_count: &mut i32) {
 			.any(|(name, movement)| (name == &state.name) && (movement == &state.movement))
 		{
 			*error_count += 1;
-			println!(
-				"Duplicate state in {} : {}",
-				path.to_string_lossy(),
-				state.name
-			);
+			if actions_fmt {
+				println!(
+					"::error file={},title=Duplicate Icon State::Duplicate state in {} : {}",
+					path.to_string_lossy(),
+					path.to_string_lossy(),
+					state.name
+				)
+			} else {
+				println!(
+					"Duplicate state in {} : {}",
+					path.to_string_lossy(),
+					state.name
+				)
+			}
 		} else {
 			state_names.push((state.name, state.movement));
 		}

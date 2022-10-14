@@ -9,29 +9,27 @@ inputs:
     required: true
   folders_to_search:
     description: 'Folders to search, comma delineated (default: root folder)'
-    required: true
     default: '.'
   flags:
     description: Put other flags for the duplicate checker here
-    default: '--warn_read'
+    default: '--warn-read --actions-fmt'
   version:
     description: 'Version of the tool to use (default: latest)'
-    default: 'v1.0.2'
-outputs:
-  duplicates:
-    description: "Number of duplicate icons as a string"
-    value: "0"
+    default: 'v1.0.3'
 runs:
   using: "composite"
   steps:
     - name: Install Duplicate Checker
-      uses: jaxxstorm/action-install-gh-release@v1.5.0
+      uses: jaxxstorm/action-install-gh-release@v1.7.1
       with:
         repo: spacestation13/dmi-duplicate-state-checker
         tag: ${{ inputs.version }}
         cache: enable
+        arch: x86_64
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+
     - run: |
-        echo "::set-output name=duplicates::$(./dmi-duplicate-state-checker -p ${{ inputs.folders_to_search }} ${{ inputs.flags }})"
+        os_str=$(echo 'console.log("${{ runner.os }}".toLowerCase())' | node -);
+        /opt/hostedtoolcache/spacestation13/dmi-duplicate-state-checker/${{ inputs.version }}/${os_str}-x86_64/dmi-duplicate-state-checker -p ${{ inputs.folders_to_search }} ${{ inputs.flags }}
       shell: bash
