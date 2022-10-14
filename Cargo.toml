@@ -4,7 +4,7 @@ description = "Simple CI tool to check that all DMIs in a directory do not have 
 repository = "https://github.com/spacestation13/dmi-duplicate-state-checker"
 authors = ["ZeWaka <zewakagamer@gmail.com>"]
 license = "MIT"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
