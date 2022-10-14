@@ -10,16 +10,16 @@ use std::{
 #[command(author, version, about)]
 struct Args {
 	/// List of paths to check for duplicate states within DMI files
-	#[arg(short, long)]
+	#[arg(short, long, required = true)]
 	paths: Vec<PathBuf>,
 
-	/// Exits with an error code corresponding to how many duplicates were detected
-	#[arg(long, default_value_t = true)]
-	error: bool,
+	/// Exit with a code of 0 instead of how many duplicates were detected
+	#[arg(short, long, default_value_t = true)]
+	donterror: bool,
 
-	/// If we encounter a file we can't read, output a warning
-	#[arg(long, default_value_t = false)]
-	read_errors: bool,
+	/// If a file is encountered that can't be read, output a warning
+	#[arg(short, long, default_value_t = false)]
+	warn_read: bool,
 }
 
 /// Will continue a loop if the passed expr is an error and warn with a message
@@ -47,18 +47,18 @@ fn main() {
 		let globpaths: Vec<_> = builder.into_iter().flatten().collect();
 
 		for potential_file in globpaths.iter() {
-			let path = skip_fail_yell!(potential_file, "Couldn't read path: {}", args.read_errors);
+			let path = skip_fail_yell!(potential_file, "Couldn't read path: {}", args.warn_read);
 
-			let file = skip_fail_yell!(File::open(path), "Couldn't read file: {}", args.read_errors);
+			let file = skip_fail_yell!(File::open(path), "Couldn't read file: {}", args.warn_read);
 
-			let dmi = skip_fail_yell!(Icon::load(file), "Couldn't read DMI: {}", args.read_errors);
+			let dmi = skip_fail_yell!(Icon::load(file), "Couldn't read DMI: {}", args.warn_read);
 
 			check_dmi(dmi, path, &mut error_count);
 		}
 	}
-	println!("Complete!");
+	println!("Complete, {} duplicates found.", error_count);
 
-	if args.error {
+	if args.donterror {
 		std::process::exit(error_count);
 	}
 }
