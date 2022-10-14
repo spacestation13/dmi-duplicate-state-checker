@@ -1,5 +1,8 @@
 name: 'Check Duplicate DMI Icon States'
 description: 'Detects that DMIs in folders do not have duplicate icon states'
+branding:
+  icon: 'image'  
+  color: 'blue'
 inputs:
   GITHUB_TOKEN:
     description: A GITHUB_TOKEN to fetch the tool
