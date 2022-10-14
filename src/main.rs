@@ -24,12 +24,12 @@ struct Args {
 
 /// Will continue a loop if the passed expr is an error and warn with a message
 macro_rules! skip_fail_yell {
-	($res:expr, $err:literal, $loud:expr) => {
+	($res:expr, $err:literal, $pth:expr, $loud:expr) => {
 		match $res {
 			Ok(val) => val,
 			Err(e) => {
 				if ($loud) {
-					println!($err, e);
+					println!($err, $pth, e);
 				}
 				continue;
 			}
@@ -47,11 +47,26 @@ fn main() {
 		let globpaths: Vec<_> = builder.into_iter().flatten().collect();
 
 		for potential_file in globpaths.iter() {
-			let path = skip_fail_yell!(potential_file, "Couldn't read path: {}", args.warn_read);
+			let path = skip_fail_yell!(
+				potential_file,
+				"Couldn't read path:{}{}",
+				"",
+				args.warn_read
+			);
 
-			let file = skip_fail_yell!(File::open(path), "Couldn't read file: {}", args.warn_read);
+			let file = skip_fail_yell!(
+				File::open(path),
+				"Couldn't read file at {} : {}",
+				path.to_string_lossy(),
+				args.warn_read
+			);
 
-			let dmi = skip_fail_yell!(Icon::load(file), "Couldn't read DMI: {}", args.warn_read);
+			let dmi = skip_fail_yell!(
+				Icon::load(file),
+				"Couldn't read DMI at {} : {}",
+				path.to_string_lossy(),
+				args.warn_read
+			);
 
 			check_dmi(dmi, path, &mut error_count);
 		}
