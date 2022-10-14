@@ -68,7 +68,10 @@ fn check_dmi(dmi: Icon, path: &Path, error_count: &mut i32) {
 	let mut state_names = Vec::with_capacity(dmi.states.len());
 
 	for state in dmi.states {
-		if state_names.iter().any(|i| i == &state.name) {
+		if state_names
+			.iter()
+			.any(|(name, movement)| (name == &state.name) && (movement == &state.movement))
+		{
 			*error_count += 1;
 			println!(
 				"Duplicate state in {} : {}",
@@ -76,7 +79,7 @@ fn check_dmi(dmi: Icon, path: &Path, error_count: &mut i32) {
 				state.name
 			);
 		} else {
-			state_names.push(state.name);
+			state_names.push((state.name, state.movement));
 		}
 	}
 }
