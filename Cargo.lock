@@ -201,7 +201,7 @@ dependencies = [
 
 [[package]]
 name = "dmi-duplicate-state-checker"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "clap",
  "dmi",

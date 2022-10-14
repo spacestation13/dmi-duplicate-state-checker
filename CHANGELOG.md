@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-10-14
+
+* Fixes erroneous flagging of movement states as duplicates
+
 ## [1.0.0] - 2022-10-14
 
 * Initial Release
