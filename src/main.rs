@@ -58,7 +58,7 @@ fn main() {
 	}
 	println!("Complete, {} duplicates found.", error_count);
 
-	if args.donterror {
+	if !args.donterror {
 		std::process::exit(error_count);
 	}
 }
