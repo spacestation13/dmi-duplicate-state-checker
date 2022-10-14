@@ -1,9 +1,15 @@
 [package]
 name = "dmi-duplicate-state-checker"
+description = "Simple CI tool to check that all DMIs in a directory do not have duplicate icon states"
+repository = "https://github.com/spacestation13/dmi-duplicate-state-checker"
+authors = ["ZeWaka <zewakagamer@gmail.com>"]
+license = "MIT"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dmi = "0.1"
+clap = { version = "4.0", features = ["derive"] }
+dmi = "0.1.3"
+globmatch = "0.2.0"
