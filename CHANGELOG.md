@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [1.0.4] - 2022-11-07
+
+* Maintance release - cuts down on unused internal dependencies
+
 ## [1.0.3] - 2022-10-14
 
 * Now has an associated GitHub Action for easy CI running
