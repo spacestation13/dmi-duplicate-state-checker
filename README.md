@@ -14,7 +14,7 @@ steps:
   - uses: actions/checkout@v2
 
   - name: Check Duplicate DMI Icon States
-    uses: spacestation13/dmi-duplicate-state-checker@v1.0.4
+    uses: spacestation13/dmi-duplicate-state-checker@v1
     with:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
