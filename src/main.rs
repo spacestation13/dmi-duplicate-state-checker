@@ -24,7 +24,7 @@ struct Args {
 	warn_read: bool,
 
 	/// Message formatting is in the correct format for GitHub Actions error reporting
-	#[arg(long)]
+	#[arg(long, default_value_t = false)]
 	actions_fmt: bool,
 }
 

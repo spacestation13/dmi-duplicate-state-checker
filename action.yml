@@ -15,12 +15,12 @@ inputs:
     default: '--warn-read --actions-fmt'
   version:
     description: 'Version of the tool to use (default: latest)'
-    default: 'v1.0.5'
+    default: 'v1.0.6'
 runs:
   using: "composite"
   steps:
     - name: Install Duplicate Checker
-      uses: jaxxstorm/action-install-gh-release@v1.7.1
+      uses: jaxxstorm/action-install-gh-release@v2.0.0
       with:
         repo: spacestation13/dmi-duplicate-state-checker
         tag: ${{ inputs.version }}

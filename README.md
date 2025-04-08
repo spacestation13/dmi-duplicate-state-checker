@@ -11,7 +11,7 @@ There is a bundled GitHub Action with this repository, found via the button or [
 Here is the simplest example usage within a workflow:
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v4
 
   - name: Check Duplicate DMI Icon States
     uses: spacestation13/dmi-duplicate-state-checker@v1
