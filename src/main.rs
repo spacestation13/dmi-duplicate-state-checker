@@ -89,7 +89,7 @@ fn main() {
 			check_dmi(dmi, path, &mut error_count, args.actions_fmt);
 		}
 	}
-	println!("Complete, {} duplicates found.", error_count);
+	println!("Complete, {error_count} duplicates found.");
 
 	if !args.donterror {
 		std::process::exit(error_count);
