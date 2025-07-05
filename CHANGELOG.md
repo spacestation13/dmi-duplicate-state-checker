@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [1.0.7] - 2025-07-05
+* package updates
+
 ## [1.0.6] - 2025-04-08
 * Updates to deal with the deprecation of the old github cache mechanisms
 * package updates
